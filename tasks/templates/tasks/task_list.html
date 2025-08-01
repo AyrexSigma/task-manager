@@ -1,0 +1,9 @@
+<!-- task_list.html -->
+<h1>Список задач</h1>
+<ul>
+  {% for task in tasks %}
+    <li>{{ task.title }}</li>
+  {% empty %}
+    <li>Немає задач</li>
+  {% endfor %}
+</ul>
