@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+<div class="container mt-4">
+    <h2>Видалити задачу</h2>
+    <p>Ви впевнені, що хочете видалити задачу: <strong>{{ task.title }}</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Так, видалити</button>
+        <a href="{% url 'task-detail' task.pk %}" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
+{% endblock %}

@@ -20,9 +20,10 @@
                         {% with comment.attachment.url|lower as url %}
                             {% if ".jpg" in url or ".jpeg" in url or ".png" in url or ".gif" in url %}
                                 <img src="{{ comment.attachment.url }}" alt="Image" class="img-fluid rounded" style="max-height: 300px;">
-                            {% else %}
-                                📎 <a href="{{ comment.attachment.url }}" target="_blank">Вкладення</a>
                             {% endif %}
+                            <a href="{{ comment.attachment.url }}" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
+                                📎 Відкрити вкладення
+                            </a>
                         {% endwith %}
                     {% endif %}
 
