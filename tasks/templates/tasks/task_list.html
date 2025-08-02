@@ -1,9 +1,37 @@
-<!-- task_list.html -->
-<h1>Список задач</h1>
-<ul>
-  {% for task in tasks %}
-    <li>{{ task.title }}</li>
-  {% empty %}
-    <li>Немає задач</li>
-  {% endfor %}
-</ul>
+{% extends "base.html" %}
+{% block title %}Tasks{% endblock %}
+
+{% block content %}
+<h1>Tasks</h1>
+
+<a href="{% url 'task-create' %}" class="btn btn-success mb-3">Create New Task</a>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Due Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+      <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.get_status_display }}</td>
+        <td>{{ task.get_priority_display }}</td>
+        <td>{{ task.due_date|date:"Y-m-d" }}</td>
+        <td>
+          <a href="{% url 'task-detail' task.pk %}" class="btn btn-primary btn-sm">View</a>
+          <a href="{% url 'task-update' task.pk %}" class="btn btn-warning btn-sm">Edit</a>
+          <a href="{% url 'task-delete' task.pk %}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5" class="text-center">No tasks found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

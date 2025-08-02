@@ -1,10 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ task.title }}</h2>
+    <p><strong>Опис:</strong> {{ task.description }}</p>
+    <p><strong>Дата виконання:</strong> {{ task.due_date }}</p>
+    <p><strong>Створено:</strong> {{ task.created }}</p>
+    <p><strong>Статус:</strong> {{ task.is_completed|yesno:"Завершено,Не завершено" }}</p>
+    <hr>
+
+    <h4>Коментарі:</h4>
+    {% if comments %}
+        {% for comment in comments %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p>{{ comment.text }}</p>
+
+                    {% if comment.attachment %}
+                        {% with comment.attachment.url|lower as url %}
+                            {% if ".jpg" in url or ".jpeg" in url or ".png" in url or ".gif" in url %}
+                                <img src="{{ comment.attachment.url }}" alt="Image" class="img-fluid rounded" style="max-height: 300px;">
+                            {% else %}
+                                📎 <a href="{{ comment.attachment.url }}" target="_blank">Вкладення</a>
+                            {% endif %}
+                        {% endwith %}
+                    {% endif %}
+
+                    <p class="text-muted mt-2">
+                        Автор: {{ comment.author }} | {{ comment.created_at|date:"d E Y р. H:i" }}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Поки немає коментарів.</p>
+    {% endif %}
+
+    <hr>
+    <h5>Додати коментар:</h5>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit" class="btn btn-primary mt-2">Надіслати</button>
+    </form>
+</div>
+{% endblock %}
